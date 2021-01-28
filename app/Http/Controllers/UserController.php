@@ -78,7 +78,41 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'names' => 'string',
+            'lastname' => 'string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toArray(), 422);
+        }
+
+        if ($request->has('names')) {
+            $user->names = $request->names;
+        }
+
+        if ($request->has('lastname')) {
+            $user->lastname = $request->lastname;
+        }
+
+        if ($user->isClean()) {
+            return response([
+                'message' => 'nothing to change'
+            ], 304);
+        }
+
+        if ($user->isDirty()) {
+            $user->save();
+            return response([
+                'data' => $user,
+                'meta' => [
+                    'success' => true,
+                    'message' => 'updated'
+                ]
+            ]);
+        }
+
+
     }
 
     /**

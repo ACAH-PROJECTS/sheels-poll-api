@@ -18,10 +18,11 @@ use App\Http\Controllers\UserController;
 
 Route::middleware(['auth:api', 'json.response'])->group(function () {
     Route::apiResource('users', UserController::class);
+    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
 
 
 Route::middleware(['json.response'])->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
-Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
+    Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 });

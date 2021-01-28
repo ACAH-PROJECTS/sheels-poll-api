@@ -21,7 +21,7 @@ class UserTest extends TestCase
             'names' => $user->names,
             'lastname' => $user->lastname,
             'email' => $user->email,
-            'password' => $user->password,
+            'password' => 'password',
         ], $this->headers);
 
         $response->assertSuccessful();
@@ -81,8 +81,43 @@ class UserTest extends TestCase
                 'id',
                 'names',
                 'lastname',
-                'email'
+                'email',
+                'created_at',
+                'updated_at'
             ]
+        ]);
+
+    }
+
+    public function test_a_user_can_be_edited() {
+
+        $user = User::factory()->create();
+        $user->names = 'Fernando Jose';
+        $user->lastname = 'Herrera Perez';
+
+        $response = $this->put(route('users.update', ['user' => $user->id]), [
+            'names' => $user->names,
+            'lastname' => $user->lastname
+        ], $this->headers);
+
+        $response->assertSuccessful();
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'names',
+                'lastname',
+                'email',
+                'created_at',
+                'updated_at'
+            ],
+            'meta' => [
+                'success',
+                'message'
+            ]
+        ]);
+        $this->assertDatabaseHas('users', [
+            'names' => $user->names,
+            'lastname' => $user->lastname
         ]);
 
     }
@@ -95,25 +130,6 @@ class UserTest extends TestCase
         $response = $this->get(route('users.destroy', ['user' => $user->id]), $this->headers);
 
         $response->assertSuccessful();
-
-    }
-
-    public function test_an_user_can_register() {
-
-        $user = User::factory()->make();
-
-        $response = $this->post(route('auth.register'), [
-            'names' => $user->names,
-            'lastname' => $user->lastname,
-            'email' => $user->email,
-            'password' => $user->password,
-            'password_confirmation' => $user->password,
-        ]);
-
-        $response->assertSuccessful();
-        $response->assertJsonStructure([
-            'token'
-        ]);
 
     }
 }
