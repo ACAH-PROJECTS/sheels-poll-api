@@ -26,7 +26,7 @@ abstract class TestCase extends BaseTestCase
             'created_at' => date('Y-m-d'),
             'updated_at' => date('Y-m-d'),
         ]);
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->create(['role' => 'admin']);
         $this->token = $this->user->createToken('TestToken', [])->accessToken;
 
         $this->headers['Accept'] = 'application/json';

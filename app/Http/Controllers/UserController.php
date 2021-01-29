@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['api.admin']);
+        $this->middleware(['api.manager'])->only(['index']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +43,8 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'names' => 'required|string',
             'lastname' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
+            'role' => 'required|in:admin,manager',
             'password' => 'required|string'
         ]);
 
@@ -80,7 +87,8 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'names' => 'string',
-            'lastname' => 'string'
+            'lastname' => 'string',
+            'role' => 'in:admin,manager'
         ]);
 
         if ($validator->fails()) {
