@@ -13,7 +13,7 @@ class UserTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     /* @test */
-    public function test_a_user_can_be_created()
+    public function test_a_admin_can_create_a_user()
     {
         $user = User::factory()->make();
 
@@ -21,6 +21,7 @@ class UserTest extends TestCase
             'names' => $user->names,
             'lastname' => $user->lastname,
             'email' => $user->email,
+            'role' => $user->role,
             'password' => 'password',
         ], $this->headers);
 
@@ -31,6 +32,7 @@ class UserTest extends TestCase
                 'names',
                 'lastname',
                 'email',
+                'role',
                 'created_at',
                 'updated_at'
             ],
@@ -58,6 +60,7 @@ class UserTest extends TestCase
                     'names',
                     'lastname',
                     'email',
+                    'role',
                     'created_at',
                     'updated_at'
                 ]
