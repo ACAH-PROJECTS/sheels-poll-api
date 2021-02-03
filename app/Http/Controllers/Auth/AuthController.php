@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -25,11 +27,14 @@ class AuthController extends Controller
         }
 
         $request['password'] = Hash::make($request['password']);
-        $request['remember_token'] = Str::random(10);
         $request['role'] = 'guest';
 
         $user = User::create($request->toArray());
+
+        event(new Registered($user));
         $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+
+
 
         return response([
             'token' => $token
@@ -61,7 +66,8 @@ class AuthController extends Controller
         }
     }
 
-    public function logout (Request $request) {
+    public function logout(Request $request)
+    {
         $token = $request->user()->token();
         $token->revoke();
         $response = ['message' => 'You have been successfully logged out!'];
