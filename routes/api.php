@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -18,7 +19,7 @@ use App\Http\Controllers\UserController;
 */
 
 Route::middleware(['auth:api', 'json.response'])->group(function () {
-    // CRUD USERS -> ONLY ADMINS
+    // CRUD USERS -> ONLY ADMINS AND MANAGERS
     Route::apiResource('users', UserController::class);
 
     // Auth routes
@@ -31,6 +32,11 @@ Route::middleware(['json.response'])->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
+    // Password Reset
     Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('email.reset');
     Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.reset');
+
+    // Email Verification
+    Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+    Route::get('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 });

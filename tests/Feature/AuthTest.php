@@ -12,7 +12,8 @@ class AuthTest extends TestCase
 
     use RefreshDatabase, WithFaker;
 
-    public function test_a_user_can_register() {
+    public function test_a_user_can_register()
+    {
 
         $user = User::factory()->make();
 
@@ -26,12 +27,13 @@ class AuthTest extends TestCase
 
         $response->assertSuccessful();
         $response->assertJsonStructure([
-            'token'
+            'user',
+            'access_token'
         ]);
-
     }
 
-    public function test_a_user_can_be_logged() {
+    public function test_a_user_can_be_logged()
+    {
 
         $response = $this->post(route('auth.login'), [
             'email' => $this->user->email,
@@ -40,16 +42,16 @@ class AuthTest extends TestCase
 
         $response->assertSuccessful();
         $response->assertJsonStructure([
-            'token'
+            'user',
+            'access_token'
         ]);
-
     }
 
-    public function test_a_user_can_logout() {
+    public function test_a_user_can_logout()
+    {
 
         $response = $this->post(route('auth.logout'), [], $this->headers);
 
         $response->assertSuccessful();
-
     }
 }

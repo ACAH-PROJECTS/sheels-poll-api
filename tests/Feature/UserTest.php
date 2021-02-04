@@ -33,8 +33,6 @@ class UserTest extends TestCase
                 'lastname',
                 'email',
                 'role',
-                'created_at',
-                'updated_at'
             ],
             'meta' => [
                 'success',
@@ -61,8 +59,6 @@ class UserTest extends TestCase
                     'lastname',
                     'email',
                     'role',
-                    'created_at',
-                    'updated_at'
                 ]
             ],
             'meta' => [
@@ -71,7 +67,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_can_get_a_user_by_id() {
+    public function test_can_get_a_user_by_id()
+    {
 
         $user = User::factory()->create();
 
@@ -85,14 +82,13 @@ class UserTest extends TestCase
                 'names',
                 'lastname',
                 'email',
-                'created_at',
-                'updated_at'
+                'role',
             ]
         ]);
-
     }
 
-    public function test_a_user_can_be_edited() {
+    public function test_a_user_can_be_edited()
+    {
 
         $user = User::factory()->create();
         $user->names = 'Fernando Jose';
@@ -110,8 +106,7 @@ class UserTest extends TestCase
                 'names',
                 'lastname',
                 'email',
-                'created_at',
-                'updated_at'
+                'role'
             ],
             'meta' => [
                 'success',
@@ -122,17 +117,16 @@ class UserTest extends TestCase
             'names' => $user->names,
             'lastname' => $user->lastname
         ]);
-
     }
 
 
-    public function test_a_user_can_be_deleted_by_id() {
+    public function test_a_user_can_be_deleted_by_id()
+    {
 
         $user = User::factory()->create();
 
         $response = $this->get(route('users.destroy', ['user' => $user->id]), $this->headers);
 
         $response->assertSuccessful();
-
     }
 }
