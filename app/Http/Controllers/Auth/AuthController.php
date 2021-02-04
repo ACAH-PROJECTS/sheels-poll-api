@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class AuthController extends Controller
 
 
         return response([
-            'user' => $user,
+            'user' => new UserResource($user),
             'access_token' => $token
         ]);
     }
@@ -56,7 +57,7 @@ class AuthController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
                 return response([
-                    'user' => $user,
+                    'user' => new UserResource($user),
                     'access_token' => $token
                 ]);
             } else {
