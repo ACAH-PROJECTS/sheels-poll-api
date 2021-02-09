@@ -9,6 +9,8 @@ use Tests\TestCase;
 
 class SurveyTemplateTest extends TestCase
 {
+
+    use RefreshDatabase, WithFaker;
     /**
      * A basic feature test example.
      *
@@ -19,7 +21,7 @@ class SurveyTemplateTest extends TestCase
 
         Factory::create(SurveyTemplate::class, 5);
 
-        $response = $this->get(route('survey-template.index'), $this->headers);
+        $response = $this->get(route('survey-templates.index'), $this->headers);
 
         $response->assertSuccessful();
         $response->assertJsonStructure([
@@ -27,8 +29,8 @@ class SurveyTemplateTest extends TestCase
                 "*" => [
                     "id",
                     "title",
-                    "total_sections",
-                    "total_quiestion"
+                    "sections",
+                    "questions"
                 ]
             ]
         ]);

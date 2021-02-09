@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SurveyTemplateCollection;
 use App\Models\SurveyTemplate;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class SurveyTemplateController extends Controller
      */
     public function index()
     {
-        //
+        return SurveyTemplateCollection::collection(SurveyTemplate::all());
     }
 
     /**

@@ -10,4 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SurveyTemplate extends Model
 {
     use HasFactory, UsesUUID, SoftDeletes;
+
+    protected $protected = [];
 }

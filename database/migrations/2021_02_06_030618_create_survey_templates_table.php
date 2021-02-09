@@ -16,8 +16,8 @@ class CreateSurveyTemplatesTable extends Migration
         Schema::create('survey_templates', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('title');
-            $table->integer('sections_count');
-            $table->integer('questions_count');
+            $table->integer('sections_count')->nullable();
+            $table->integer('questions_count')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
