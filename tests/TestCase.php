@@ -29,10 +29,15 @@ abstract class TestCase extends BaseTestCase
             'created_at' => date('Y-m-d'),
             'updated_at' => date('Y-m-d'),
         ]);
-        $this->user = User::factory()->create(['role' => 'ADMIN']);
+        $this->user = $this->createUser('ADMIN');
         $this->token = $this->user->createToken('TestToken', [])->accessToken;
 
         $this->headers['Accept'] = 'application/json';
         $this->headers['Authorization'] = 'Bearer ' . $this->token;
+    }
+
+    public function createUser($role)
+    {
+        return User::factory()->create(['role' => $role]);
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\SurveyTemplateController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
@@ -19,9 +20,14 @@ use App\Http\Controllers\UserController;
 */
 
 Route::middleware(['auth:api', 'json.response'])->group(function () {
-    // CRUD USERS -> ONLY ADMINS AND MANAGERS
-    Route::apiResource('users', UserController::class);
 
+    // ----------------------------- API RESOURCES -----------------------------
+    // users -> [ADMIN, MANAGER]
+    Route::apiResource('users', UserController::class);
+    // survey-templates -> [ADMIN, MANAGER]
+    Route::apiResource('survey-templates', SurveyTemplateController::class);
+
+    // -------------------------------------------------------------------------
     // Auth routes
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
